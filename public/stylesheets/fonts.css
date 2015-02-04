@@ -1,0 +1,46 @@
+body {
+
+	font-family: 'Roboto', sans-serif;
+	font-size: 100%;
+
+}
+
+#header {
+
+	font-size: 200%;
+	color: #2bad84;
+
+}
+
+#mainLogo {
+
+	font-family: 'Oswald', sans-serif;
+	font-size: 700%;
+	color: #000000;
+
+}
+
+#navigation a:link, a:visited, a:hover {
+
+	color: #2bad84;
+
+}
+
+#recorder {
+
+	font-size: 175%;
+	color: #000000;
+
+}
+
+#charEntry #defaultBox {
+
+	font-size: 100%;
+
+}
+
+#charEntry #privateBox {
+
+	font-size: 300%;
+
+}

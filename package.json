@@ -1,35 +1,20 @@
 {
-  "name": "OpenShift-Sample-App",
-  "version": "1.0.0",
-  "description": "OpenShift Sample Application",
-  "keywords": [
-    "OpenShift",
-    "Node.js",
-    "application",
-    "openshift"
-  ],
-  "author": {
-    "name": "OpenShift",
-    "email": "ramr@example.org",
-    "url": "http://www.openshift.com/"
-  },
-  "homepage": "http://www.openshift.com/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/openshift/origin-server"
-  },
-
-  "engines": {
-    "node": ">= 0.6.0",
-    "npm": ">= 1.0.0"
-  },
-
-  "dependencies": {
-    "express": "~3.4.4"
-  },
-  "devDependencies": {},
-  "bundleDependencies": [],
-
+  "name": "typeCapsule",
+  "version": "0.0.1",
+  "description": "A web app that mixes free speech and time-release. typeCapsule is little more than a text box that accepts one character of input at a time, and, using socket.io, sends each char in real time to a database (MySQL). After a given time period, all of the posts over that period are released to the public for reading and (possibly) comment. typeCapsule is still very much pre-release.",
   "private": true,
-  "main": "server.js"
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.0.0",
+    "cookie-parser": "~1.0.1",
+    "debug": "~0.7.4",
+    "ejs": "~0.8.5",
+    "express": "~4.2.0",
+    "moment": "^2.8.1",
+    "morgan": "~1.0.0",
+    "redis": "^0.11.0",
+    "static-favicon": "~1.0.0"
+  }
 }

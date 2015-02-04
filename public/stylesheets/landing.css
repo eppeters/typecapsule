@@ -1,0 +1,126 @@
+body {
+
+	height: 100%;
+	font-size: 100%;
+
+}
+
+div {
+
+	/*border: 1px solid #000000;*/
+
+}
+
+#header {
+
+	margin-top: 2%;
+	width: 100%;
+	height: 33%;
+	text-align: center;
+
+}
+
+#mainLogo {
+
+}
+
+#header p {
+
+	line-height: 100%;
+	margin: 0.5% 0;
+	padding: 0;
+
+}
+
+#recorder {
+
+	height: 33%;
+	text-align: center;
+
+}
+
+#recordInstructs {
+
+	height: 50%;
+	max-width: 15em;
+	margin: 0 auto;
+
+}
+
+#microphone	{
+
+	background-color: #ffb400;
+	padding: 1% 0;
+
+}
+
+#charEntry	{
+
+	display: block;
+
+}
+
+#privateButton	{
+
+	display: inline-block;
+	font-size: .5em;
+
+}
+
+#defaultBox {
+
+	width: 40%;
+	max-width: 50%;
+	height: 10em;
+	max-height: 15em;
+	border: 2px solid #000000;
+
+}
+
+#privateBox	{
+
+	font-size : 300%;
+	width: 1em;
+	height: 1em;
+	border: 2px solid #000000;
+
+}
+
+.hidden	{
+
+	display: none;
+
+}
+
+#timeQty	{
+
+	width: 7em;
+	font-size: 1.25em;
+
+}
+
+#timeUnits	{
+
+	font-size: 1.25em;
+
+
+}
+
+#timeForm	span	{
+
+	font-size: .75em;
+	margin-left: .25em;
+
+}
+
+.errorMsg	{
+
+	color: #ff0000;
+
+}
+
+.successMsg	{
+
+	color: #95CF7A;
+
+}

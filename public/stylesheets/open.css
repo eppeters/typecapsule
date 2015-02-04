@@ -1,0 +1,53 @@
+	article	{
+
+		width: 100%;
+		overflow: hidden;
+		padding: 2px;
+	
+	}
+
+	article nav	{
+
+
+	}
+
+	article ul	{
+
+		list-style: none;
+		text-align: center;
+
+	}
+
+	article li	{
+
+		display: inline;
+		vertical-align: baseline;
+
+	}
+
+	article	div {
+
+		float: left;	
+		width: 33%;
+		text-align: center;
+	
+	}
+
+	main article:nth-child(even)	{
+
+		background-color: #CCC;
+	
+	}
+
+	main article:nth-child(odd)	{
+
+		background-color: #FFF;
+	
+	}
+
+	article p:first-child	{
+
+		padding: 10px;		
+	
+	}
+
