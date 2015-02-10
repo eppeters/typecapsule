@@ -1,17 +1,18 @@
 var redisClient = require('../lib/redisClient');
-var Promise = require('rsvp').Promise
+var Promise = require('rsvp').Promise;
+var _ = require('lodash');
 
-var Capsule = function() {
+var Capsule = function(options) {
+  this.config = {
+     keys: {
+        'nextCapId': 'next_cap_id',
+     },
+     namespaces: {
+        'releaseList': 'rl:'
+     }
+  };
 
-}
-
-var config = {
-   keys: {
-      'nextCapId': 'next_cap_id',
-   },
-   namespaces: {
-      'releaseList': 'rl:'
-   }
+  this.config = _.extend(this.config, options);
 };
 
 var p = Capsule.prototype;
@@ -22,31 +23,33 @@ p.createNew = function(submissionTime, releaseTime, submissionText) {
 
    // Insert capId into list at namespaces.releaseList:releaseTime
    getNextCapId().then().then();
-}
+};
 
 /**
  * Rejects with err or resolves with the next cap id.
  */
-function getNextCapId() {
+p.getNextCapId = function() {
 
-   function incNextCap(resolve, reject) {
+  var config = this.config;
 
-      function handleIncr(err, response) {
-         var successMsg;
-         successMsg = config.keys.nextCapId + ' incremented';
+  function incNextCap(resolve, reject) {
 
-         if (err) {
-            reject(err);
-         } 
-         else {
-            resolve(response);
-         }
-      }
+     function handleIncr(err, response) {
+        var successMsg;
+        successMsg = config.keys.nextCapId + ' incremented';
 
-      redisClient.incr(config.keys.nextCapId, handleIncr);
-   }
+        if (err) {
+           reject(err);
+        } 
+        else {
+           resolve(response);
+        }
+     }
+
+     redisClient.incr(config.keys.nextCapId, handleIncr);
+  }
 
    return new Promise(incNextCap);
-}
+};
 
-module.exports.getNextCapId = getNextCapId;
+module.exports = Capsule;
