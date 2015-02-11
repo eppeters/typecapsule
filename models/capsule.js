@@ -23,11 +23,17 @@ p.createNew = function(submissionTime, releaseTime, submissionText) {
    
    var capId;
 
-   getNextCapId()
+   var promise =
+     
+     getNextCapId()
 
      .then(_.bind(this.createCapsuleHash, this, submissionTime, releaseTime, submissionText))
+
+     .then(_.bind(this.addCapsuleHashToCapsuleSet, this, releaseTime))
   
      .then(_.bind(this.addCapsuleSetToReleaseZset, this, releaseTime));
+
+   return promise;
 };
 
 /**
@@ -103,6 +109,7 @@ p.addCapsuleSetToReleaseZset = function(releaseTime, setName) {
            reject(err);
         } 
         else {
+          console.log(successMsg);
            resolve(hashName);
         }
      }
@@ -115,6 +122,33 @@ p.addCapsuleSetToReleaseZset = function(releaseTime, setName) {
   }
 
    return new Promise(zsetAdd);
+};
+
+p.addCapsuleHashToCapsuleSet = function(releaseTime, hashName) {
+  var config = this.config;
+
+  function setAdd(resolve, reject) {
+
+    var setName = config.namespaces.releaseSet + releaseTime;
+
+     function handleSetAdd(err, response) {
+        var successMsg;
+        successMsg = hashName + ' added to set ' + setName;
+
+        if (err) {
+           reject(err);
+        } 
+        else {
+            console.log(successMsg);
+           resolve(setName);
+        }
+     }
+
+     redisClient.sadd(setName, hashName, handleSetAdd);
+  }
+
+   return new Promise(setAdd);
+
 };
 
 module.exports = Capsule;
