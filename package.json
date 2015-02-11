@@ -12,15 +12,16 @@
     "debug": "~0.7.4",
     "ejs": "~0.8.5",
     "express": "~4.2.0",
+    "grunt": "~0.4.5",
+    "grunt-env": "~0.4.2",
+    "lodash": "~3.1.0",
     "mocha": "^2.1.0",
     "moment": "^2.8.1",
     "morgan": "~1.0.0",
     "redis": "^0.11.0",
+    "redis-mock": "^0.4.1",
     "rsvp": "^3.0.16",
     "static-favicon": "~1.0.0",
-    "unit.js": "^1.1.2",
-    "grunt": "~0.4.5",
-    "grunt-env": "~0.4.2",
-    "lodash": "~3.1.0"
+    "unit.js": "^1.1.2"
   }
 }
