@@ -1,6 +1,8 @@
 var test = require('unit.js');
+var proxyquire = require('proxyquire');
+var redisClientStub = {};
 
-var Capsule = require('../../models/capsule');
+var Capsule = proxyquire('../../models/capsule', { 'redisClient': redisClientStub });
 
 var capsule = new Capsule();
 
