@@ -9,8 +9,8 @@ var Capsule = function(options) {
             'releaseQueue': 'release_queue'
           },
     namespaces: {
-                  'releaseSet': 'rs:',
-                  'capsuleObject': 'co:'
+                  'releaseSet': 'releaseSet:',
+                  'capsuleObject': 'capsuleHash:'
                 }
   };
 
