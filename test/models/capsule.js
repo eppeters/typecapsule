@@ -12,7 +12,7 @@ var Capsule = proxyquire('../../models/capsule', { '../lib/redisClient': redisMo
 
 var capsule = new Capsule();
 
-describe('getNextCapId:', function() {
+describe('getNextCapId', function() {
    it('Must be a function', function() {
       test
          .value(capsule.getNextCapId).isType('function');
@@ -29,7 +29,7 @@ describe('getNextCapId:', function() {
     })
 
     .catch(function(err) {
-      throw err;
+      done(err);
     });
 
   });
@@ -47,7 +47,53 @@ describe('getNextCapId:', function() {
               .value(result).is(value + 1);
             done();
            })
+           .catch(function(err) {
+             done(err);
+           });
         })
         
+  });
+});
+
+describe('createCapsuleHash', function() {
+  var stime = '123456789';
+  var rtime = '987654321';
+  var stext = 'Test submisson text';
+  var id = 0;
+
+  it('Must be a function', function() {
+    test
+      .value(capsule.createCapsuleHash).isType('function');
+  });
+
+  it('Should return a promise', function() {
+    test
+      .value(capsule.createCapsuleHash()).isInstanceOf(Promise);
+  });
+
+  it('Should return the correct hashName', function(done) {
+    capsule.createCapsuleHash(stime, rtime, stext, id)
+    
+    .then(function(hashName) {
+      test
+        .value(hashName).is(capsule.config.namespaces.capsuleObject + id);
+      done();
+    })
+
+    .catch(function (err) {
+      done(err);
+    });
+  });
+
+  it('Should not accept submission times after release times', function(done) {
+    capsule.createCapsuleHash(rtime, stime, stext, id)
+      .then(function() {
+        done(new Error("Resolved when it should have rejected."));
+      })
+      .catch(function (err) {
+        test
+          .exception(err);
+        done();
+      })
   });
 });
