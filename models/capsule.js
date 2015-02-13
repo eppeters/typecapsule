@@ -110,15 +110,11 @@ p.addCapsuleSetToReleaseZset = function(releaseTime, setName) {
       } 
       else {
         console.log(successMsg);
-        resolve(hashName);
+        resolve(zsetName);
       }
     }
 
-    redisClient.zadd(zsetName, {
-      'stime': submissionTime,
-      'rtime': releaseTime,
-      'stext': submissionText
-    }, handleZsetAdd);
+    redisClient.zadd(zSetName, releaseTime, setName, handleZsetAdd);
   }
 
   return new Promise(zsetAdd);
