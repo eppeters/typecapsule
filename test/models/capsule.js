@@ -6,7 +6,14 @@ var redisMock = require('redis-mock');
 var redisMockClient = redisMock.createClient();
 redisMockClient['@noCallThru'] = true; // Don't allow db connect methods, for instance, to be run
 
-var Promise = require('rsvp').Promise;
+var RSVP = require('rsvp');
+var Promise = RSVP.Promise;
+
+// Generic error handler for uncaught Promise errors -- really a sign that the tests are problematic,
+// not the code.
+RSVP.on('error', function(reason) {
+  test.fail(reason);
+});
 
 var Capsule = proxyquire('../../models/capsule', { '../lib/redisClient': redisMockClient });
 
@@ -106,7 +113,7 @@ describe('addCapsuleHashNameToCapsuleSet', function() {
       .value(capsule.addCapsuleHashNameToCapsuleSet(rtime, hashName)).isInstanceOf(Promise);
   });
 
-  it('Should not throw an error when valid params are given', function() {
+  it('Should not throw an error when valid params are given', function(done) {
     capsule.addCapsuleHashNameToCapsuleSet(rtime, hashName)
     
     .then(function(setName) {
@@ -118,7 +125,7 @@ describe('addCapsuleHashNameToCapsuleSet', function() {
     });
   });
 
-  it('Should return the correct set name', function() {
+  it('Should return the correct set name', function(done) {
     var expectedSetName = setNamePrefix + rtime;
     capsule.addCapsuleHashNameToCapsuleSet(rtime, hashName)
     
@@ -132,20 +139,15 @@ describe('addCapsuleHashNameToCapsuleSet', function() {
       done(err);
     });
   });
-
-  it('Should contain the hashName after an add', function() {
+  
+  it('Should contain the hashName after an add', function(done) {
     capsule.addCapsuleHashNameToCapsuleSet(rtime, hashName)
     
     .then(function(setName) {
-      redisMockClient.sismember(setName, hashName, function(err, result) {
+      redisMockClient.smembers(setName, function(err, result) {
         if (err) return done(err);
 
-        try {
-          test.value(result).dump().is(true);
-        }
-        catch(e) {
-          done(e);
-        }
+        test.value(result).hasValue(hashName);
 
         done();
       });
