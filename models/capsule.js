@@ -19,19 +19,26 @@ var Capsule = function(options) {
 
 var p = Capsule.prototype;
 
+// Resolves with true if the capsule has been created
 p.createNew = function(submissionTime, releaseTime, submissionText) {
 
   var capId;
 
   var promise =
 
-    getNextCapId()
+    this.getNextCapId()
 
     .then(_.bind(this.createCapsuleHash, this, submissionTime, releaseTime, submissionText))
 
-    .then(_.bind(this.addCapsuleHashToCapsuleSet, this, releaseTime))
+    .then(_.bind(this.addCapsuleHashNameToCapsuleSet, this, releaseTime))
 
-    .then(_.bind(this.addCapsuleSetToReleaseZset, this, releaseTime));
+    .then(_.bind(this.addCapsuleSetToReleaseZset, this, releaseTime))
+    
+    .then(function() {
+      return new Promise(function(resolve) {
+        resolve(true);
+      });
+    });
 
   return promise;
 };
@@ -103,7 +110,7 @@ p.addCapsuleSetToReleaseZset = function(releaseTime, setName) {
 
     function handleZsetAdd(err, response) {
       var successMsg;
-      successMsg = setName + ' added to zset ' + zSetName;
+      successMsg = setName + ' added to zset ' + zsetName;
 
       if (err) {
         reject(err);
@@ -114,7 +121,7 @@ p.addCapsuleSetToReleaseZset = function(releaseTime, setName) {
       }
     }
 
-    redisClient.zadd(zSetName, releaseTime, setName, handleZsetAdd);
+    redisClient.zadd(zsetName, +releaseTime, setName, handleZsetAdd);
   }
 
   return new Promise(zsetAdd);

@@ -15,6 +15,18 @@ RSVP.on('error', function(reason) {
   test.fail(reason);
 });
 
+// Capsule with a redisClient stub injected
+
+redisMockClient.zadd = function() {
+  // call the callback with the result
+  try {
+    arguments[arguments.length - 1](null, true);
+  }
+  catch (e) {
+    console.log('error in zadd stub: ' + e.message);
+  }
+};
+
 var Capsule = proxyquire('../../models/capsule', { '../lib/redisClient': redisMockClient });
 
 var capsule = new Capsule();
@@ -62,7 +74,7 @@ describe('getNextCapId', function() {
            .catch(function(err) {
              done(err);
            });
-        })
+        });
         
   });
 });
@@ -115,8 +127,8 @@ describe('addCapsuleHashNameToCapsuleSet', function() {
 
   it('Should not throw an error when valid params are given', function(done) {
     capsule.addCapsuleHashNameToCapsuleSet(rtime, hashName)
-    
-    .then(function(setName) {
+
+    .then(function () {
       done();
     })
 
@@ -154,6 +166,73 @@ describe('addCapsuleHashNameToCapsuleSet', function() {
     })
 
     .catch(function (err) {
+      done(err);
+    });
+  });
+});
+
+describe('addCapsuleSetToReleaseZset', function() {
+  var rtime = '987654321';
+  var setName = 'releaseSet:setName';
+  var config = capsule.config;
+
+  it('Must be a function', function() {
+    test
+      .value(capsule.addCapsuleSetToReleaseZset).isType('function');
+  });
+
+  it('Should return a promise', function() {
+    test
+      .value(capsule.addCapsuleSetToReleaseZset(rtime, setName)).isInstanceOf(Promise);
+  });
+
+  it('Should not throw an error when valid params are given', function(done) {
+    capsule.addCapsuleSetToReleaseZset(rtime, setName)
+
+    .then(function() {
+      console.log('here');
+      done();
+    })
+    
+    .catch(function (err) {
+      done(err);
+    });
+  });
+
+  it('Should return the correct zset name', function(done) {
+    var expectedZSetName = config.keys.releaseQueue;
+
+    capsule.addCapsuleSetToReleaseZset(rtime, setName)
+    
+    .then(function(zsetName) {
+      console.log(zsetName);
+      test
+        .value(zsetName).is(expectedZSetName);
+      done();
+    })
+
+    .catch(function (err) {
+      done(err);
+    });
+  });
+});
+
+// Integration of the above functions.
+describe('createNew', function() {
+  var stime = '123456789';
+  var rtime = '987654321';
+  var stext = 'Test submisson text';
+
+  it('Should resolve with true', function(done) {
+    capsule.createNew(stime, rtime, stext)
+
+    .then(function(response) {
+      test
+        .value(response).isTrue();
+      done();
+    })
+  
+    .catch(function(err) {
       done(err);
     });
   });
