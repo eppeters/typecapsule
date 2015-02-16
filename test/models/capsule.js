@@ -18,7 +18,12 @@ describe('getNextCapId', function() {
          .value(capsule.getNextCapId).isType('function');
    });
 
-  it('Should return a number', function(done) {
+    it('Should return a promise', function() {
+      test
+        .value(capsule.createCapsuleHash()).isInstanceOf(Promise);
+    });
+
+  it('Promise should resolve with a number', function(done) {
 
     capsule.getNextCapId()
     
@@ -84,16 +89,70 @@ describe('createCapsuleHash', function() {
       done(err);
     });
   });
+});
 
-  it('Should not accept submission times after release times', function(done) {
-    capsule.createCapsuleHash(rtime, stime, stext, id)
-      .then(function() {
-        done(new Error("Resolved when it should have rejected."));
-      })
-      .catch(function (err) {
-        test
-          .exception(err);
+describe('addCapsuleHashNameToCapsuleSet', function() {
+  var rtime = '987654321';
+  var setNamePrefix = 'releaseSet:';
+  var hashName = 'hashName';
+
+  it('Must be a function', function() {
+    test
+      .value(capsule.addCapsuleHashNameToCapsuleSet).isType('function');
+  });
+
+  it('Should return a promise', function() {
+    test
+      .value(capsule.addCapsuleHashNameToCapsuleSet(rtime, hashName)).isInstanceOf(Promise);
+  });
+
+  it('Should not throw an error when valid params are given', function() {
+    capsule.addCapsuleHashNameToCapsuleSet(rtime, hashName)
+    
+    .then(function(setName) {
+      done();
+    })
+
+    .catch(function (err) {
+      done(err);
+    });
+  });
+
+  it('Should return the correct set name', function() {
+    var expectedSetName = setNamePrefix + rtime;
+    capsule.addCapsuleHashNameToCapsuleSet(rtime, hashName)
+    
+    .then(function(setName) {
+      test
+        .value(setName).is(expectedSetName);
+      done();
+    })
+
+    .catch(function (err) {
+      done(err);
+    });
+  });
+
+  it('Should contain the hashName after an add', function() {
+    capsule.addCapsuleHashNameToCapsuleSet(rtime, hashName)
+    
+    .then(function(setName) {
+      redisMockClient.sismember(setName, hashName, function(err, result) {
+        if (err) return done(err);
+
+        try {
+          test.value(result).dump().is(true);
+        }
+        catch(e) {
+          done(e);
+        }
+
         done();
-      })
+      });
+    })
+
+    .catch(function (err) {
+      done(err);
+    });
   });
 });

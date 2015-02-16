@@ -120,7 +120,7 @@ p.addCapsuleSetToReleaseZset = function(releaseTime, setName) {
   return new Promise(zsetAdd);
 };
 
-p.addCapsuleHashToCapsuleSet = function(releaseTime, hashName) {
+p.addCapsuleHashNameToCapsuleSet = function(releaseTime, hashName) {
   var config = this.config;
 
   function setAdd(resolve, reject) {
