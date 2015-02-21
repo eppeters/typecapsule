@@ -3,48 +3,22 @@ var express = require('express');
 var router = express.Router();
 
 
-var capsule = require('../models/capsule');
+var Capsule = require('../models/capsule');
+var capsule = new Capsule();
 
 router.post('/', function(req, res)	{
 
-	var capsule = req.body;
-	
-	redisClient.incr("next_cap_id",
-		function(err, capsuleID)	{
+	var params = req.body;
 
-			// TODO: Write clean-up functions that remove corrupted data when one
-			// of the database call steps fails for /seal
-			if (err)
-				res.send("incr: " + err);
+  var submissionTime = params.s;
+  var releaseTime = params.r;
+  var submissionText = params.t;
 
-			// set the following key/value as a new hash:
-			// 	c:capsuleID { // c = capsule
-			//		
-			//			s: <'s'ubmission time>
-			//			t: <submission 't'ext>
-			//
-			// 	}
-			redisClient.hmset("c:" + capsuleID, "s", capsule.s, "t", capsule.t,
-				function _capsuleSetResult(err, reply)	{
+  console.log('here');
 
-					if (err)
-						res.send("hmset" + err);
-				
-					// place a reference to the capsule in the sorted set of capsules,
-					// with weight capsule.r (release time)
-					redisClient.zadd("release_set", capsule.r, capsuleID,
-						function _capsuleAddReleaseSet(err, reply)	{
-
-							if (err)
-								res.send("zadd: " + err);
-			
-							res.send("Hi!");
-						
-						});
-				
-				});
-		
-		});
+  capsule.createNew(submissionTime, releaseTime, submissionText).catch(function(err) {
+    console.log(err);
+  });
 
 });
 

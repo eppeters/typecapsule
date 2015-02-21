@@ -72,7 +72,6 @@ p.getNextCapId = function() {
 };
 
 p.createCapsuleHash = function(submissionTime, releaseTime, submissionText, capId) {
-
   var config = this.config;
 
   function createHash(resolve, reject) {
