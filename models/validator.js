@@ -5,13 +5,15 @@ var _ = require('lodash');
 v.validate = function() {
   this.setInputs(arguments);
   this.setUpValidators();
-  this.runSuite();
+  return this.runSuite();
 };
 
 v.runSuite = function() {
-  _.forEach(this.validators, _.bind(function runValidator(validator) {
-    validator(this.inputs);
+  var result = _.map(this.validators, _.bind(function runValidator(validator) {
+    return validator.apply(this, this.inputs);
   }, this));
+
+  return result;
 };
 
 v.setInputs = function() {
@@ -21,7 +23,7 @@ v.setInputs = function() {
 v.validators = [];
 
 /**
- * Validators start with 'validate'
+ * Validator methods start with 'validate'
  */
 v.setUpValidators = function() {
   var pattern = /^validate.+/;
@@ -32,6 +34,6 @@ v.setUpValidators = function() {
       this.validators.push(this[methodName]);
     }
   }, this));
-}
+};
 
 module.exports = validator;
