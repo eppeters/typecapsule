@@ -2,7 +2,7 @@ var validator = {};
 var v = validator;
 var _ = require('lodash');
 
-v.validate = function() {
+v.validate = function(/* variable */) {
   this.setInputs(arguments);
   this.setUpValidators();
   return this.runSuite();
@@ -16,7 +16,7 @@ v.runSuite = function() {
   return result;
 };
 
-v.setInputs = function() {
+v.setInputs = function(/* variable */) {
   this.inputs = arguments;
 };
 
