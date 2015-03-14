@@ -1,4 +1,4 @@
-var statuses = require('validationResultStatusCodes');
+var statuses = require('./validationResultStatusCodes');
 
 var result = {};
 

@@ -1,5 +1,5 @@
-var parent = require('validator');
-var result = require('validationResult');
+var parent = require('./validator');
+var result = require('./validationResult');
 var _ = require('lodash');
 
 var textCapsuleValidator = Object.create(parent);
