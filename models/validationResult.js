@@ -8,37 +8,54 @@ result.resultObj = {
   'message': null
 };
 
-result.setStatus = function(statusName) {
+function setStatus(obj, statusName) {
   var code = statuses.getCodeByName(statusName);
   var name = statuses.getNameByCode(code);
 
-
-  this.resultObj.statusCode = code;
-  this.resultObj.statusName = name;
+  obj.resultObj.statusCode = code;
+  obj.resultObj.statusName = name;
 };
+
+function formatMessage(msg) {
+  var formatted = msg.trim().toLowerCase();
+
+  return formatted;
+};
+
+result.setError = function() {
+  this._setStatus('error');
+};
+
+result.setSuccess = function() {
+  this._setStatus('success');
+}
 
 result.setMessage = function(msg) {
   this.resultsObj.message = formatMessage(msg);
 };
 
-result.get = function(statusName, msg) {
-  if (arguments.length < 2) {
-    throw new Error("Need a status name and message for a result");
+result.isError = function() {
+  if (this.resultObj.statusCode === statuses.getCodeByName('error')) {
+    return true;
   }
-  this.setStatus(statusName);
-  this.setMessage(msg);
 
-  return this.yield();
-};
+  return false;
+}
 
-result.yield = function() {
-  return this.resultObj;
-};
+result.isSuccess = function() {
+  if (this.resultObj.statusCode === statuses.getCodeByName('success')) {
+    return true;
+  }
 
-var formatMessage = function(msg) {
-  var formatted = msg.trim().toLowerCase();
+  return false;
+}
 
-  return formatted;
-};
+result.getMessage = function() {
+  return this.resultObj.message;
+}
+
+result.hasMessage = function() {
+  return this.resultObj.message !== null;
+}
 
 module.exports = result;

@@ -18,10 +18,16 @@ statuses.names = function() {
 }();
 
 statuses.getCodeByName = function(name) {
+  if (typeof this.names[name] === 'undefined') {
+    throw new Error("Result status name " + name + " does not exist.");
+  }
   return this.names[name];
 };
 
 statuses.getNameByCode = function(code) {
+  if (typeof this.codes[code] === 'undefined') {
+    throw new Error("Result status code " + code + " does not exist.");
+  }
   return this.codes[code];
 };
 
