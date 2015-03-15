@@ -9,11 +9,11 @@ v.validate = function(/* variable */) {
 };
 
 v.runSuite = function() {
-  var result = _.map(this.validators, _.bind(function runValidator(validator) {
+  var results = _.map(this.validators, _.bind(function runValidator(validator) {
     return validator.apply(this, this.inputs);
   }, this));
 
-  return result;
+  return results;
 };
 
 v.setInputs = function(/* variable */) {
