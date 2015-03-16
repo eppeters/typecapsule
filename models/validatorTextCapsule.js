@@ -1,132 +1,120 @@
 var parent = require('./validator');
-var result = require('./validationResult');
 var _ = require('lodash');
 var moment = require('moment');
 
 var textCapsuleValidator = Object.create(parent);
 var t = textCapsuleValidator;
 
-var momentUnixTimeStampFormat = 'X';
+var momentUnixTimestampFormat = 'X';
 
-t.validateDateRange = function (submissionTime, releaseTime, text) {
+t.globalizeInputs = function () {
+  submissionTime = this.inputs[0];
+  releaseTime = this.inputs[1];
+  text = this.inputs[2];
+}
 
-  var resultObj;
+t.validateDateRange = function (resultObj) {
+
+  console.log(submissionTime, releaseTime);
 
   if (releaseTime <= submissionTime ) {
-    resultObj = result.get('error', 'the release time must be after the submission time');
+    resultObj.setError();
   }
   else {
-    resultObj = result.get('success', 'the release time is after the submission time');
+    resultObj.setSuccess();
   }
 
-  return resultObj;
 };
 
-t.validateTextNotEmpty = function (submissionTime, releaseTime, text) {
-  var resultObj;
+t.validateTextNotEmpty = function (resultObj) {
 
   if (text === '') {
-    resultObj = result.get('error', 'you must submit some text');
+    resultObj.setError();
   }
   else {
-    resultObj = result.get('success', 'you submitted some text');
+    resultObj.setSuccess();
   }
 
-  return resultObj;
 };
 
-t.validateTextIsString = function (submissionTime, releaseTime, text) {
-  var resultObj;
+t.validateTextIsString = function (resultObj) {
 
-  if (_.isString(text) === FALSE) {
-    resultObj = result.get('error', 'the submitted text must be a string');
+  if (_.isString(text) === false) {
+    resultObj.setError();
   }
   else {
-    resultObj = result.get('success', 'the submitted text is a string');
+    resultObj.setSuccess();
   }
 
-  return resultObj;
 };
 
-t.validateReleaseTimeGiven = function(submissionTime, releaseTime, text) {
-  var resultObj;
+t.validateReleaseTimeGiven = function (resultObj) {
 
   if (typeof releaseTime === 'undefined') {
-    resultObj = result.get('error', 'the release time must be given');
+    resultObj.setError();
   }
   else {
-    resultObj = result.get('success', 'the release time was given');
+    resultObj.setSuccess();
   }
 
-  return resultObj;
 };
 
-t.validateSubmissionTimeGiven = function(submissionTime, releaseTime, text) {
-  var resultObj;
+t.validateSubmissionTimeGiven = function (resultObj) {
 
   if (typeof submissionTime === 'undefined') {
-    resultObj = result.get('error', 'the submission time must be given');
+    resultObj.setError();
   }
   else {
-    resultObj = result.get('success', 'the submission time was given');
+    resultObj.setSuccess();
   }
 
-  return resultObj;
 };
 
-t.validateTextGiven = function(submissionTime, releaseTime, text) {
-  var resultObj;
+t.validateTextGiven = function (resultObj) {
 
   if (typeof text === 'undefined') {
-    resultObj = result.get('error', 'the text must be given');
+    resultObj.setError();
   }
   else {
-    resultObj = result.get('success', 'the text was given');
+    resultObj.setSuccess();
   }
 
-  return resultObj;
-}
+};
 
-t.validateSubmissionTimeIsUnixTimestamp = function(submissionTime, releaseTime, text) {
-  var resultObj;
+t.validateSubmissionTimeIsUnixTimestamp = function (resultObj) {
 
-  if (moment(submissionTime, momentUnixTimeStampFormat).isValid() === false) {
-    resultObj = result.get('error', 'the submission time must be a valid UNIX timestamp');
+  if (moment(submissionTime, momentUnixTimestampFormat).isValid() === false) {
+    resultObj.setError();
   }
   else {
-    resultObj = result.get('success', 'the submission time was a valid UNIX timestamp');
+    resultObj.setSuccess();
   }
 
-  return resultObj;
 }
 
-t.validateReleaseTimeIsUnixTimestamp = function(submissionTime, releaseTime, text) {
-  var resultObj;
+t.validateReleaseTimeIsUnixTimestamp = function (resultObj) {
 
-  if (moment(releaseTime, momentUnixTimeStampFormat).isValid() === false) {
-    resultObj = result.get('error', 'the release time must be a valid UNIX timestamp');
+  if (moment(releaseTime, momentUnixTimestampFormat).isValid() === false) {
+    resultObj.setError();
   }
   else {
-    resultObj = result.get('success', 'the release time was a valid UNIX timestamp');
+    resultObj.setSuccess();
   }
 
-  return resultObj;
 }
 
-t.validateSubmissionTimeWithinLast24Hours = function(submissionTime, releaseTime, text) {
-  var resultObj;
+t.validateSubmissionTimeWithinLast24Hours = function (resultObj) {
 
   var dayAgoMoment = moment().subtract(24, 'hours');
   var submissionTimeMoment = moment(submissionTime, momentUnixTimestampFormat);
 
   if (moment.min(dayAgoMoment, submissionTimeMoment) == submissionTimeMoment) {
-    resultObj = result.get('error', 'the submission time must be within the last 24 hours');
+    resultObj.setError();
   }
   else {
-    resultObj = result.get('success', 'the submission time was within the last 24 hours');
+    resultObj.setSuccess();
   }
 
-  return resultObj;
 }
 
 module.exports = textCapsuleValidator;

@@ -1,4 +1,4 @@
-var statuses = require('./validationResultStatusCodes');
+var statuses = require('./validationResultStatus');
 
 var result = {};
 
@@ -23,11 +23,11 @@ function formatMessage(msg) {
 };
 
 result.setError = function() {
-  this._setStatus('error');
+  setStatus(this, 'error');
 };
 
 result.setSuccess = function() {
-  this._setStatus('success');
+  setStatus(this, 'success');
 }
 
 result.setMessage = function(msg) {
@@ -58,4 +58,6 @@ result.hasMessage = function() {
   return this.resultObj.message !== null;
 }
 
-module.exports = result;
+module.exports = function() {
+  return Object.create(result);
+};
