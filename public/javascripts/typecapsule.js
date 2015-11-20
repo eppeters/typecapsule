@@ -7,8 +7,6 @@ var typecapForm = function()	{
 	
 		"problem": function typecapForm_problem(formItem)	{
 
-				console.log("In formProblem");
-
 				var errMsg;
 				
 				switch(formItem)	{
@@ -21,6 +19,7 @@ var typecapForm = function()	{
 										+ "See the FAQ for details.";
 						break;
 					case "denom":
+            break;
 				
 				}
 				

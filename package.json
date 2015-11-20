@@ -23,6 +23,7 @@
     "redis-mock": "^0.4.1",
     "rsvp": "^3.0.16",
     "static-favicon": "~1.0.0",
-    "unit.js": "^1.1.2"
+    "unit.js": "^1.1.2",
+    "moment-precise-range": "~0.1.1"
   }
 }

@@ -96,7 +96,10 @@ div {
 
 	width: 7em;
 	font-size: 1.25em;
+}
 
+#timeRadios {
+  margin-top: 10px;
 }
 
 #timeUnits	{
@@ -111,6 +114,10 @@ div {
 	font-size: .75em;
 	margin-left: .25em;
 
+}
+
+#sealButton {
+  margin-top: 10px;
 }
 
 .errorMsg	{

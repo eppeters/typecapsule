@@ -3,6 +3,7 @@
 		width: 100%;
 		overflow: hidden;
 		padding: 2px;
+    font-family: 'Roboto', 'sans-serif';
 	
 	}
 
@@ -41,7 +42,7 @@
 
 	main article:nth-child(odd)	{
 
-		background-color: #FFF;
+		background-color: #BBB;
 	
 	}
 
@@ -50,4 +51,21 @@
 		padding: 10px;		
 	
 	}
+
+  #topBar {
+    background-color: #ffb400; 
+    height: 6.5em;
+    line-height: 6.5em;
+  }
+
+  #topBar a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  #topBar h1 {
+    font-family: 'Oswald', 'sans-serif';
+    letter-spacing: .07em;
+    margin-left: 1em;
+  }
 

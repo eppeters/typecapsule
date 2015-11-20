@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+  <title>type-Capsule</title>
+	<!-- Meta info -->
+	<meta name="description"
+	content="A time capsule for the web. Users anonymously share anything they want in the box on this page, and a while later it becomes available, along with everything every other user has posted in that time, in one download." />
+	<meta name="keywords"
+	content="social media, sharing, secrets, anonymous, writing, blog, journal, diary, microblog" />
+	<meta http-equiv="author"
+	content="Eddie Peters" />
+	<meta http-equiv="pragma"
+	content="no-cache" />
+
+	<link href="/stylesheets/open.css" rel="stylesheet" type="text/css">
+  <link href="stylesheets/fonts.css" type="text/css" rel="stylesheet" />
+  <link href='http://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css' />
+  <link href='http://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css' />
+  <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css' />
+  
+  <!-- Icons -->
+  <link href="stylesheets/font-awesome-4.1.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+
+</head>
+
+<body>
+  <div id="topBar"><h1><a href="/">type-Capsule</a> released capsules</h1></div>
+  <main id="capsules">
+    <% for(var i=0; i < capsules.length; ++i) {%>
+      <article>
+        <p><%= capsules[i].stext %></p>
+        <div><p>Submitted: <%= capsules[i].stime %></p></div>
+        <div><p>Released: <%= capsules[i].rtime %></p></div>
+        <div><p>Delayed for <%= capsules[i].delay %></p></div>
+      </article>
+    <% } %>
+	</main>
+</body>
+
+</html>

@@ -4,19 +4,21 @@
 <head>
 
 	<title>type-Capsule</title>
-	<link href="stylesheets/open.css" rel="stylesheet" type="text/css">
+	<link href="/stylesheets/open.css" rel="stylesheet" type="text/css">
 
 </head>
 
 <body>
-
-	<main id="capsules">
+  <main id="capsules">
+    <% for(var i=0; i < capsules.length; ++i) {%>
+      <article>
+        <p><%= capsules[i].stext %></p>
+        <div><p>Submitted: <%= capsules[i].stime %></p></div>
+        <div><p>Released: <%= capsules[i].rtime %></p></div>
+        <div><p>Delayed for <%= capsules[i].delay %></p></div>
+      </article>
+    <% } %>
 	</main>
-
-	<script src="javascripts/jquery-2.1.1.min.js"></script>
-	<script src="javascripts/open.js"></script>
-	<script src="javascripts/moment.js"></script>
-	<script src="javascripts/readable-range.js"></script>
 </body>
 
 </html>

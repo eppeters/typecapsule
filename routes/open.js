@@ -9,7 +9,7 @@ var util = require('util');
 var express = require('express');
 var router = express.Router();
 
-var moment = require('moment');
+var moment = require('moment-precise-range');
 
 var redisClient = require('../lib/redisClient');
 var config = require('../config/params.js');
@@ -18,12 +18,10 @@ var _ = require('lodash');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-
 	res.render('open');
-
 });
 
-router.post(/^\/list\/?(\d+)?\/?(\d+)?/, function (req, res)	{
+router.get(/^\/list\/?(\d+)?\/?(\d+)?/, function (req, res)	{
 	// TODO: Input checking for the object
 	// passed into the /open/list route via
 	// POST
@@ -59,15 +57,41 @@ router.post(/^\/list\/?(\d+)?\/?(\d+)?/, function (req, res)	{
 
         for (var i = 0; i < capNames.length; ++i) {
           getCaps.hgetall(capNames[i]);
-          console.log(capNames[i]);
         }
 
         getCaps.exec(function _buildCapsuleReturnObjects(err, capsules) {
-          if (err) {
-            console.log(err);
+          var context, capsulesCollection;
+          if (!err) {
+            capsulesCollection = _.map(capsules, function prepareCapsuleContext(capsule) {
+              var submitTime, releaseTime, delay;
+
+              submitTime = moment(+(capsule.stime) * 1000);
+              releaseTime = moment(+(capsule.rtime) * 1000);
+              delay = moment.preciseDiff(releaseTime, submitTime);
+
+              submitTime = submitTime.format("LLL");
+              releaseTime = releaseTime.format("LLL");
+
+              var capsuleContext = {
+                'stime': submitTime,
+                'rtime': releaseTime,
+                'stext': capsule.stext,
+                'delay': delay
+              };
+
+              console.log(capsuleContext);
+
+              return capsuleContext;
+            });
+
+            context = {
+              'capsules': capsulesCollection
+            };
+
+            res.render('list', context);
           }
           else {
-            res.send(capsules);	
+            console.log(err);
           }
         });
 			});

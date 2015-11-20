@@ -9,7 +9,7 @@
 
 	<!-- Meta info -->
 	<meta name="description"
-	content="The social media time capsule. Users anonymously share anything they want in the box on this page, and a while later it becomes available, along with everything every other user has posted in that time, in one download." />
+	content="A time capsule for the web. Users anonymously share anything they want in the box on this page, and a while later it becomes available, along with everything every other user has posted in that time, in one download." />
 	<meta name="keywords"
 	content="social media, sharing, secrets, anonymous, writing, blog, journal, diary, microblog" />
 	<meta http-equiv="author"
@@ -25,6 +25,7 @@
 
 <!-- Other people's stylesheets -->
 <link href="stylesheets/radio.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
 
 <!-- Google Fonts -->
 <link href='http://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css' />
@@ -46,7 +47,7 @@
 			type-Capsule
 		</div>
 		<div id="navigation">
-			<a href="faq/index.html">FAQ</a>
+			<a href="open/list/0/100">View Released Capsules</a>
 		</div>
 	</div>
 	<div id="recorder"> 
@@ -66,7 +67,7 @@
 				<p>How long should type-Capsule wait to release your message?</p>
 				<p id="timeErr"></p>
 				<input type="text" id="timeQty" name="time"></input>
-					<div>
+					<div id="timeRadios">
 						<input type="radio" id="radio-1-1" name="denom" class="regular-radio" value="seconds" /><label for="radio-1-1"></label><span>Seconds</span>
 						<input type="radio" id="radio-1-2" name="denom" class="regular-radio" value="minutes" /><label for="radio-1-2"></label><span>Minutes</span>
 						<input type="radio" id="radio-1-3" name="denom" class="regular-radio" value="hours" /><label for="radio-1-3"></label><span>Hours</span>
@@ -74,9 +75,8 @@
 						<input type="radio" id="radio-1-5" name="denom" class="regular-radio" value="months" /><label for="radio-1-5"></label><span>Months</span>
 						<input type="radio" id="radio-1-6" name="denom" class="regular-radio" value="years" /><label for="radio-1-6"></label><span>Years</span>
 					</div>
-					<div>
-						<p>Click here when your message is complete.</p>
-						<button type="submit">Seal the capsule.</button>
+					<div id="sealButton">
+						<button class="pure-button pure-button-primary" type="submit">Seal the capsule.</button>
 					</div>
 			</div>
 		</form>
