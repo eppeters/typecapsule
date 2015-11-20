@@ -14,10 +14,16 @@ router.post('/', function(req, res)	{
   var releaseTime = params.r;
   var submissionText = params.t;
 
-  console.log('here');
-
   capsule.createNew(submissionTime, releaseTime, submissionText).catch(function(err) {
-    console.log(err);
+    res.send({
+      success: false,
+      error: err
+    });
+  });
+
+  res.send({
+    success: true,
+    release: releaseTime * 1000
   });
 
 });
