@@ -9,12 +9,13 @@ var index = require('./routes/index');
 var seal = require('./routes/seal');
 var open = require('./routes/open');
 
-var port = process.env.OPENSHIFT_NODEJS_PORT ||  process.env.OPENSHIFT_INTERNAL_PORT || 80;
-var ipaddr = process.env.OPENSHIFT_NODEJS_IP || process.env.OPENSHIFT_INTERNAL_IP || '127.0.0.1';
+var serverConfig = require('./config/server');
 
 var app = express();
 
-server = app.listen(port, ipaddr, function() {
+console.log(serverConfig);
+
+server = app.listen(serverConfig.port, serverConfig.ipaddr, function() {
 
   console.log('Listening on port %d', server.address().port);
 
