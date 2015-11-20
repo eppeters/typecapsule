@@ -1,19 +1,20 @@
+/**
+ *
+ * Note: This file is not yet Promisified. It's also kind of callback hell.
+ * Refactor.
+ *
+ */
+
 var util = require('util');
 var express = require('express');
 var router = express.Router();
 
 var moment = require('moment');
 
-var db = require('../config/secrets').redis;
+var redisClient = require('../lib/redisClient');
+var config = require('../config/params.js');
 
-var redis = require('redis');
-var redisClient = redis.createClient(db.port, db.host, { "auth_pass" : db.auth });
-redisClient.on("error", function (err)	{ console.log("redis: error: " + err); });
-redisClient.on("idle", function() { console.log("redis: gone idle"); });
-redisClient.on("ready", function ()	{ console.log("redis: ready"); });
-redisClient.on("connect", function () { console.log("redis: connected -- can accept commands"); });
-redisClient.on("end", function () { console.log("redis: end -- connection closed"); });
-
+var _ = require('lodash');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -22,83 +23,55 @@ router.get('/', function(req, res) {
 
 });
 
-router.post('/list', function (req, res)	{
-
-	console.log("count = : " + req.body.c + " offset = : " + req.body.o);
-
+router.post(/^\/list\/?(\d+)?\/?(\d+)?/, function (req, res)	{
 	// TODO: Input checking for the object
 	// passed into the /open/list route via
 	// POST
-	var offset = req.body.o;
-	var count = req.body.c;
+	var offset = req.params[0] || req.body.o || config.default_offset;
+	var count = req.params[1] || req.body.c || config.default_list_quantity;
+  console.log("count = : " + count + " offset = : " + offset);
 
 	var nowStamp = moment().unix();
-
 	console.log("nowStamp = " + nowStamp);
 
-	redisClient.zrevrangebyscore("release_set", nowStamp, "-inf", "WITHSCORES", "LIMIT", offset, count,
-		function (err, capsuleIDs)	{
-
+	redisClient.zrevrangebyscore("release_queue", nowStamp, "-inf", "LIMIT", offset, count,
+		function (err, releaseSetNames)	{
 			if (err)
 				console.log("Error: " + err);
 
-			console.log(capsuleIDs);
-
-			var getCaps = redisClient.multi();
+      var getReleaseSets = redisClient.multi();
 
 			// queue up commands to get all of the submissions
 			// NOTE: THIS BLOCKS for capsuleIDs.length/2 
 			// iterations
 			// TODO: Come up with a non-blocking solution
-			console.time("get IDs queue");
-			for (var i = 0; i < capsuleIDs.length; i += 2)
-				getCaps.hmget("c:" + capsuleIDs[i], "t", "s");
-			console.timeEnd("get IDs queue");
+			for (var i = 0; i < releaseSetNames.length; ++i)
+        getReleaseSets.smembers(releaseSetNames[i]);
 
-			getCaps.exec(function _execGetCaps(err, textsAndSubmits)	{
+			getReleaseSets.exec(function _getReleaseSetCapsuleNames(err, capNames)	{
+        capNames = _.flatten(capNames);
+        console.log(capNames, capNames.length);
 
 				var j = 0;
 				var capsules = {};
 
-				// make the capsules into nice objects --
-				// while I would like to send the client 
-				// unorganized data for the browser to 
-				// compile into nice js objects, we've got
-				// to do some processing on this side because
-				// not all browser support arrays, the return type
-				// of the redis_node multi().exec() call
-				console.time("build capsules");
-				for (var i = 0; i < capsuleIDs.length; i += 2)	{
+        var getCaps = redisClient.multi();
 
-					console.log("i = " + i);
-				
-					// build the object to return (keyed by
-					// capsule ID, with values that are 
-					// objects representing the capsule)
-					//
-					console.log("capsuleIDs[i] = " + capsuleIDs[i]);
-					console.log("capsuleIDs[i + 1] = " + capsuleIDs[i + 1]);
+        for (var i = 0; i < capNames.length; ++i) {
+          getCaps.hgetall(capNames[i]);
+          console.log(capNames[i]);
+        }
 
-					capsules[capsuleIDs[i]] = {
-					
-						"s": textsAndSubmits[j][1],
-						"r": capsuleIDs[i + 1],
-						"t": textsAndSubmits[j][0]	
-					
-					};
-
-					++j;
-
-				}
-				console.timeEnd("build capsules");
-
-				res.send(capsules);	
-			
+        getCaps.exec(function _buildCapsuleReturnObjects(err, capsules) {
+          if (err) {
+            console.log(err);
+          }
+          else {
+            res.send(capsules);	
+          }
+        });
 			});
-
-		
 		});
-
 });
 
 module.exports = router;
