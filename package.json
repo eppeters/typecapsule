@@ -24,7 +24,10 @@
     "rsvp": "^3.0.16",
     "static-favicon": "~1.0.0",
     "unit.js": "^1.1.2",
-    "moment-precise-range": "~0.1.1"
+    "moment-precise-range": "~0.1.1",
+    "grunt-contrib-symlink": "~0.3.0",
+    "bower": "~1.6.8",
+    "grunt-bower-requirejs": "~2.0.0"
   },
   "devDependencies": {
     "grunt-mocha-test": "~0.12.7"
