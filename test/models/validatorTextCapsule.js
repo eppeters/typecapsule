@@ -39,10 +39,6 @@ describe('validatorTextCapsule', function() {
 
     result = vdt.validate(st, rt, null);
 
-    _.forEach(result, function(resultItem) {
-      console.log(resultItem.resultObj);
-    });
-
     test
       .value(result['validateDateRange'].isError())
       .is(false);

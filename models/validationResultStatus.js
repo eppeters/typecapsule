@@ -22,8 +22,6 @@ statuses.getCodeByName = function(name) {
   if (typeof this.names[name] === 'undefined') {
     throw new Error("Result status name " + name + " does not exist.");
   }
-
-  console.log(this.names);
   return this.names[name];
 };
 

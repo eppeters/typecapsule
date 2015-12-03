@@ -3,8 +3,4 @@ var statusCodes = {
   1: 'error'
 };
 
-var statusNames = {
-
-};
-
 module.exports = statusCodes;

@@ -23,7 +23,7 @@ redisMockClient.zadd = function() {
     arguments[arguments.length - 1](null, true);
   }
   catch (e) {
-    console.log('error in zadd stub: ' + e.message);
+    throw e;
   }
 };
 
@@ -190,7 +190,6 @@ describe('addCapsuleSetToReleaseZset', function() {
     capsule.addCapsuleSetToReleaseZset(rtime, setName)
 
     .then(function() {
-      console.log('here');
       done();
     })
     
@@ -205,7 +204,6 @@ describe('addCapsuleSetToReleaseZset', function() {
     capsule.addCapsuleSetToReleaseZset(rtime, setName)
     
     .then(function(zsetName) {
-      console.log(zsetName);
       test
         .value(zsetName).is(expectedZSetName);
       done();
