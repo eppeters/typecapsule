@@ -47,8 +47,4 @@ describe('validatorTextCapsule', function() {
       .value(result['validateDateRange'].isError())
       .is(false);
   });
-
-  it('should give an error for release time > start time', function () {
-    throw new Error('write this test');
-  });
 });
