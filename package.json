@@ -25,5 +25,8 @@
     "static-favicon": "~1.0.0",
     "unit.js": "^1.1.2",
     "moment-precise-range": "~0.1.1"
+  },
+  "devDependencies": {
+    "grunt-mocha-test": "~0.12.7"
   }
 }
