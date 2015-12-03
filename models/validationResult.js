@@ -2,7 +2,7 @@ var statuses = require('./validationResultStatus');
 
 var result = {};
 
-result.resultObj = {
+resultObjDefault = {
   'status': null,
   'statusCode': null,
   'message': null
@@ -14,12 +14,16 @@ function setStatus(obj, statusName) {
 
   obj.resultObj.statusCode = code;
   obj.resultObj.statusName = name;
-};
+}
 
 function formatMessage(msg) {
   var formatted = msg.trim().toLowerCase();
 
   return formatted;
+}
+
+result.init = function init() {
+  this.resultObj = Object.create(resultObjDefault);
 };
 
 result.setError = function() {
@@ -28,7 +32,7 @@ result.setError = function() {
 
 result.setSuccess = function() {
   setStatus(this, 'success');
-}
+};
 
 result.setMessage = function(msg) {
   this.resultsObj.message = formatMessage(msg);
@@ -40,7 +44,7 @@ result.isError = function() {
   }
 
   return false;
-}
+};
 
 result.isSuccess = function() {
   if (this.resultObj.statusCode === statuses.getCodeByName('success')) {
@@ -48,16 +52,18 @@ result.isSuccess = function() {
   }
 
   return false;
-}
+};
 
 result.getMessage = function() {
   return this.resultObj.message;
-}
+};
 
 result.hasMessage = function() {
   return this.resultObj.message !== null;
-}
+};
 
-module.exports = function() {
-  return Object.create(result);
+module.exports = function _createNewResult() {
+  var newResult = Object.create(result);
+  newResult.init();
+  return newResult;
 };
