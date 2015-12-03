@@ -54,7 +54,7 @@ p.getNextCapId = function() {
 
     function handleIncr(err, response) {
       var successMsg;
-      successMsg = config.keys.nextCapId + ' incremented';
+      successMsg = config.keys.nextCapId + ' incremented. new value: ' + response;
 
       if (err) {
         reject(err);
