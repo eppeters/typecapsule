@@ -11,11 +11,9 @@ t.globalizeInputs = function () {
   submissionTime = this.inputs[0];
   releaseTime = this.inputs[1];
   text = this.inputs[2];
-}
+};
 
 t.validateDateRange = function (resultObj) {
-
-  console.log(submissionTime, releaseTime);
 
   if (releaseTime <= submissionTime ) {
     resultObj.setError();
@@ -90,7 +88,7 @@ t.validateSubmissionTimeIsUnixTimestamp = function (resultObj) {
     resultObj.setSuccess();
   }
 
-}
+};
 
 t.validateReleaseTimeIsUnixTimestamp = function (resultObj) {
 
@@ -101,7 +99,7 @@ t.validateReleaseTimeIsUnixTimestamp = function (resultObj) {
     resultObj.setSuccess();
   }
 
-}
+};
 
 t.validateSubmissionTimeWithinLast24Hours = function (resultObj) {
 
@@ -115,6 +113,6 @@ t.validateSubmissionTimeWithinLast24Hours = function (resultObj) {
     resultObj.setSuccess();
   }
 
-}
+};
 
 module.exports = textCapsuleValidator;
