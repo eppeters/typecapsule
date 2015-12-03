@@ -9,7 +9,7 @@ node_js:
   - "0.6"
   - "iojs"
 install:
-  - npm install -g grunt
+  - npm install grunt_cli -g
   - npm install
   - grunt install
 script: grunt test
